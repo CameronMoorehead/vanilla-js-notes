@@ -1,0 +1,51 @@
+/* CSS Reset*/
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* General Styles */
+
+h1, h2 {
+  text-align: center;
+}
+.display {
+  margin: 0 auto;
+  width: 80%;
+  height: auto;
+  border: solid black 1px;
+}
+.button-nav {
+  margin: 0 auto;
+  width: 80%;
+  height: auto;
+  border: solid black 1px;
+  text-align: center;
+}
+.button-nav button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  padding: 1em 1em;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+}
+.button-nav a {
+  text-decoration: none;
+  color: white;
+}
+
+/* Home Page Styles */
+
+.note-container {
+  margin: 1em;
+  padding: 1em;
+  border: solid black 1px;
+}
+
+/* New Note Editor Styles */
+
+
+
+/* Note Editor Styles */
