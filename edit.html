@@ -11,10 +11,19 @@
   <h1>Vanilla JS Notes</h1>
   <div class="edit display">
     <h2>Note Editor</h2>
+    <form action="https://vanilla-js-notes.herokuapp.com" method="post">
+      Title:<br>
+      <input type="text" name="title" class="notes-title"/><br>
+      Categories:<br>
+      <input type="text" name="categories" class="notes-categories" /><br>
+      Content:<br>
+      <textarea type="text" name="content" class="notes-content"></textarea>
+    </form>
   </div>
   <div class="button-nav">
     <button><a href="/" id="homeHandler">&larr; HOME</a></button>
     <button><a href="/" id="saveHandler">SAVE CHANGES</a></button>
   </div>
 </body>
+<script type="text/javascript" src="js/new-note.js"></script>
 </html>

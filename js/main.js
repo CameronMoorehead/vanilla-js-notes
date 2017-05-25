@@ -1,4 +1,4 @@
-(function() {
+(() => {
   const API_URL = "https://vanilla-js-notes.herokuapp.com/notes"
   let req = new XMLHttpRequest()
   req.open("GET", API_URL)
@@ -9,9 +9,25 @@
     let DONE = 4
     let OK = 200
     if (req.readyState === DONE) {
-      if (req.status === OK)
+      if (req.status === OK) {
         appendNotes(req.response)
+      } else {
+        console.log(`Error: ${req.status}`)
+      }
     } else {
+      handleStateChangeError()
+    }
+  }
+
+  // Ugly, but needed to avoid readystatechange's multiple calls resetting error to true
+  // Avoids innerHTML "Loading..." from rendering 2x
+  let error = true
+  function handleStateChangeError() {
+    let anchor = document.getElementById("notes-display")
+    let loading = document.createElement("p")
+    if (error) {
+      anchor.appendChild(loading).innerHTML = "Loading..."
+      error = false
       console.log(`Error: ${req.status}`)
     }
   }
