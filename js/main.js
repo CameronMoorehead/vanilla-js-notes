@@ -1,54 +1,56 @@
 (() => {
-  const API_URL = "https://vanilla-js-notes.herokuapp.com/notes"
-  let req = new XMLHttpRequest()
-  req.open("GET", API_URL)
-  req.send(null)
-  req.responseType = "json"
 
-  req.onreadystatechange = () => {
-    let DONE = 4
-    let OK = 200
-    if (req.readyState === DONE) {
-      if (req.status === OK) {
-        appendNotes(req.response)
-      } else {
-        console.log(`Error: ${req.status}`)
-      }
-    } else {
-      handleStateChangeError()
-    }
-  }
-
-  // Ugly, but needed to avoid readystatechange's multiple calls resetting error to true
-  // Avoids innerHTML "Loading..." from rendering 2x
-  let error = true
-  function handleStateChangeError() {
-    let anchor = document.getElementById("notes-display")
-    let loading = document.createElement("p")
-    if (error) {
-      anchor.appendChild(loading).innerHTML = "Loading..."
-      error = false
-      console.log(`Error: ${req.status}`)
-    }
-  }
-
-  function appendNotes(notes) {
-    notes.forEach((note) => {
-      // Create elments and append content
+  let notes = {
+    init() {
+      this.ajaxLoading()
+      this.loadNotes()
+    },
+    ajaxLoading() {
       let anchor = document.getElementById("notes-display")
-      let noteContainer = document.createElement("div")
-      let noteTitle = document.createElement("h3")
-      let noteCategories = document.createElement("h4")
-      let noteDescriptionContainer = document.createElement("div")
-      let noteDescriptionContent = document.createElement("p")
-
-      noteContainer.classList.add("note-container")
-
-      anchor.appendChild(noteContainer)
-      noteContainer.appendChild(noteTitle).innerHTML = note.title
-      noteContainer.appendChild(noteCategories).innerHTML = note.categories
-      noteContainer.appendChild(noteDescriptionContainer)
-      noteDescriptionContainer.appendChild(noteDescriptionContent).innerHTML = note.description
-    })
+      let loading = document.createElement("p")
+      loading.id = "loading"
+      anchor.appendChild(loading).innerHTML = "Loading..."
+    },
+    loadNotes() {
+      const API_URL = "https://vanilla-js-notes.herokuapp.com/notes"
+      let req = new XMLHttpRequest()
+      req.open("GET", API_URL)
+      req.send(null)
+      req.responseType = "json"
+      req.onreadystatechange = () => {
+        let DONE = 4
+        let OK = 200
+        if (req.readyState === DONE) {
+          if (req.status === OK)
+            this.appendNotes(req.response)
+        } else {
+          console.log(`Error: ${req.status}`)
+        }
+      }
+    },
+    appendNotes(notes) {
+      this.removeLoading()
+      notes.forEach((note) => {
+        // Create elments and append content
+        let anchor = document.getElementById("notes-display")
+        let noteContainer = document.createElement("div")
+        noteContainer.classList.add("note-container")
+        anchor.appendChild(noteContainer)
+        noteContainer.innerHTML = `
+          <h3>${note.title}</h3>
+          <h4>${note.categories}</h4>
+          <i class="fa fa-pencil" id="edit-note"></i>
+          <i class="fa fa-trash" id="delete-note"></i>
+          <div>
+            <p>${note.description}</p>
+          </div>`
+      })
+    },
+    removeLoading() {
+      let loading = document.getElementById("loading")
+      loading.remove()
+    }
   }
+
+  notes.init()
 })()
