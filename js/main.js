@@ -1,11 +1,12 @@
 (() => {
 
   let notes = {
+    API_URL: "https://vanilla-js-notes.herokuapp.com/notes",
     init() {
-      // this.ajaxLoading()
-      // this.loadNotes()
-      this.appendNotes2()
-      // this.appendNotes2()
+      this.ajaxLoading()
+      this.loadNotes()
+        .then(this.appendNotes.bind(this))
+        .then(this.bindEvents.bind(this))
     },
     ajaxLoading() {
       let anchor = document.getElementById("notes-display")
@@ -13,81 +14,74 @@
       loading.id = "loading"
       anchor.appendChild(loading).innerHTML = "Loading..."
     },
-    API_URL: "https://vanilla-js-notes.herokuapp.com/notes",
-    loadNotes2() {
+    loadNotes() {
+      return fetch(this.API_URL).then(data => {
+          return data.json()
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    appendNotes(notes) {
       return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest()
-        xhr.open("GET", this.API_URL)
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            resolve(JSON.parse(xhr.response))
-          } else {
-            reject(Error(xhr.statusText))
-          }
-        }
-        xhr.onerror = () => {
-          reject(Error("Network Error"))
-        }
-        xhr.send()
+        notes.forEach((note) => {
+          // Create elments and append content
+          let anchor = document.getElementById("notes-display")
+          let noteContainer = document.createElement("div")
+          noteContainer.classList.add("note-container")
+          noteContainer.id = note.id
+          anchor.appendChild(noteContainer)
+          noteContainer.innerHTML = `
+            <h3>${note.title}</h3>
+            <h4>${note.categories}</h4>
+            <i class="fa fa-pencil edit-note"></i>
+            <i class="fa fa-trash delete-note"></i>
+            <div>
+              <p>${note.description}</p>
+            </div>`
+        })
+        resolve()
+        this.removeLoading()
       })
     },
-    appendNotes2() {
-      this.loadNotes2(this.API_URL).then((response) => {
-        console.log('success!', response)
-      }, (error) => {
-        console.error('fail', error)
-      }).then((response) => {
-        console.log(response)
-      })
+    bindEvents() {
+      this.editNoteHandlers()
+      this.deleteNoteHandlers()
     },
-    // loadNotes() {
-    //   const API_URL = "https://vanilla-js-notes.herokuapp.com/notes"
-    //   let req = new XMLHttpRequest()
-    //   req.open("GET", API_URL)
-    //   req.send(null)
-    //   req.responseType = "json"
-    //   req.onreadystatechange = () => {
-    //     let DONE = 4
-    //     let OK = 200
-    //     if (req.readyState === DONE) {
-    //       if (req.status === OK)
-    //         this.appendNotes(req.response)
-    //     } else {
-    //       console.log(`Error: ${req.status}`)
-    //     }
-    //   }
-    // },
-    // appendNotes(notes) {
-    //   this.removeLoading()
-    //   notes.forEach((note) => {
-    //     // Create elments and append content
-    //     let anchor = document.getElementById("notes-display")
-    //     let noteContainer = document.createElement("div")
-    //     noteContainer.classList.add("note-container")
-    //     anchor.appendChild(noteContainer)
-    //     noteContainer.setAttribute("dataId", note.id)
-    //     noteContainer.innerHTML = `
-    //       <h3>${note.title}</h3>
-    //       <h4>${note.categories}</h4>
-    //       <i class="fa fa-pencil edit-note"></i>
-    //       <i class="fa fa-trash delete-note"></i>
-    //       <div>
-    //         <p>${note.description}</p>
-    //       </div>`
-    //   })
-    //   this.editNote()
-    // },
     removeLoading() {
       let loading = document.getElementById("loading")
       loading.remove()
     },
-    editNote() {
-      const editTarget = document.getElementsByClassName("edit-note")
-      console.log(editTarget[0])
-      // const editId = editTarget.dataset.dataId
-      // window.location.href = `edit.html?${}`
+    editNoteHandlers() {
+      const editNL = document.getElementsByClassName("edit-note")
+      const editTargetList = [...editNL]
+      console.log(editTargetList[0])
+      editTargetList.forEach((element, id) => {
+        element.onclick = () => {
+          this.editNote(id +1)
+        }
+      })
     },
-    deleteNote() {
+    deleteNoteHandlers() {
+      const deleteNL = document.getElementsByClassName("delete-note")
+      const deleteTargetList = [...deleteNL]
+      console.log(deleteTargetList[0])
+      deleteTargetList.forEach((element, id) => {
+        element.onclick = () => {
+          this.deleteNote(id +1)
+        }
+      })
+    },
+    editNote(id) {
+      sessionStorage.setItem("key", id +1)
+      window.location.href = "edit.html"
+    },
+    deleteNote(id) {
+      return fetch(`${this.API_URL}/${id}`, {
+        method: "DELETE"
+      }).then(() => {
+        let deletedNote = document.getElementById(id)
+        deletedNote.remove()
+      })
     }
   }
 
