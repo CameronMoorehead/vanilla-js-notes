@@ -16,9 +16,9 @@
     },
     loadNotes() {
       return fetch(this.API_URL).then(data => {
-          return data.json()
-      }).catch(e => {
-        console.log(e)
+        return data.json()
+      }).catch(err => {
+        console.log(err)
       })
     },
     appendNotes(notes) {
@@ -54,25 +54,31 @@
     editNoteHandlers() {
       const editNL = document.getElementsByClassName("edit-note")
       const editTargetList = [...editNL]
+      const notes = document.getElementsByClassName("note-container")
+      const notesList = [...notes]
       console.log(editTargetList[0])
-      editTargetList.forEach((element, id) => {
+      editTargetList.forEach((element, index) => {
+        let noteId = (notesList[index].id)
         element.onclick = () => {
-          this.editNote(id +1)
+          this.editNote(noteId)
         }
       })
     },
     deleteNoteHandlers() {
       const deleteNL = document.getElementsByClassName("delete-note")
       const deleteTargetList = [...deleteNL]
+      const notes = document.getElementsByClassName("note-container")
+      const notesList = [...notes]
       console.log(deleteTargetList[0])
-      deleteTargetList.forEach((element, id) => {
+      deleteTargetList.forEach((element, index) => {
+        let noteId = (notesList[index].id)
         element.onclick = () => {
-          this.deleteNote(id +1)
+          this.deleteNote(noteId)
         }
       })
     },
     editNote(id) {
-      sessionStorage.setItem("key", id +1)
+      sessionStorage.setItem("key", id)
       window.location.href = "edit.html"
     },
     deleteNote(id) {
