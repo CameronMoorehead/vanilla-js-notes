@@ -9,7 +9,7 @@
 </head>
 <body>
   <h1>Vanilla JS Notes</h1>
-  <div class="edit display">
+  <div class="edit-container display">
     <h2>Note Editor</h2>
     <form action="https://vanilla-js-notes.herokuapp.com" method="post">
       Title:<br>
@@ -20,9 +20,10 @@
       <textarea type="text" class="notes-description"></textarea>
     </form>
   </div>
-  <div class="button-nav">
-    <button><a href="/" id="homeHandler">&larr; HOME</a></button>
-    <button><a href="#" id="saveHandler">SAVE CHANGES</a></button>
+  <div class="button-nav button-nav-edit">
+    <a href="/" id="homeHandler"><button>&larr; HOME</button></a>
+    <a href="#" id="saveHandler"><button>SAVE</button></a>
+    <a href="#" id="deleteHandler"><button>DELETE</button></a>
   </div>
 </body>
 <script type="text/javascript" src="js/edit-note.js"></script>

@@ -53,8 +53,10 @@
     },
     editNoteHandlers() {
       const editNL = document.getElementsByClassName("edit-note")
+      // convert editNL to array for use with array methods
       const editTargetList = [...editNL]
       const notes = document.getElementsByClassName("note-container")
+      // convert notes to array for use with array methods
       const notesList = [...notes]
       console.log(editTargetList[0])
       editTargetList.forEach((element, index) => {
@@ -66,8 +68,10 @@
     },
     deleteNoteHandlers() {
       const deleteNL = document.getElementsByClassName("delete-note")
+      // convert deleteNL to array for use with array methods
       const deleteTargetList = [...deleteNL]
       const notes = document.getElementsByClassName("note-container")
+      // convert notes to array for use with array methods
       const notesList = [...notes]
       console.log(deleteTargetList[0])
       deleteTargetList.forEach((element, index) => {

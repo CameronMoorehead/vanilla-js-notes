@@ -3,8 +3,6 @@
     noteId: sessionStorage.getItem("key"),
     API_URL: `https://vanilla-js-notes.herokuapp.com/notes`,
     init() {
-      // this.setContent()
-      // this.bindEvents()
       this.getNote()
         .then(this.setContent.bind(this))
       this.bindEvents()
@@ -29,7 +27,6 @@
       noteDescription.value = noteData.description
     },
     setContent(noteData) {
-      console.log(noteData)
       this.setTitle(noteData)
       this.setCategories(noteData)
       this.setDescription(noteData)
@@ -38,6 +35,10 @@
       let save = document.getElementById("saveHandler")
       save.onclick = () => {
         this.saveChanges()
+      }
+      let del = document.getElementById("deleteHandler")
+      del.onclick = () => {
+        this.deleteNote()
       }
     },
     saveChanges() {
@@ -55,6 +56,13 @@
         }
       }).then(response => {
         // return to homepage after edit
+        window.location.href = "/"
+      })
+    },
+    deleteNote() {
+      return fetch(`${this.API_URL}/${this.noteId}`, {
+        method: "DELETE"
+      }).then(response => {
         window.location.href = "/"
       })
     }

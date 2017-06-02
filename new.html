@@ -9,7 +9,7 @@
 </head>
 <body>
   <h1>Vanilla JS Notes</h1>
-  <div class="new display">
+  <div class="edit-container display">
     <h2>New Note Editor</h2>
     <form>
       Title:<br>
@@ -20,9 +20,10 @@
       <textarea type="text" class="notes-description"></textarea>
     </form>
   </div>
-  <div class="button-nav">
-    <button><a href="#" id="publishHandler">PUBLISH</a></button>
-    <button><a href="/" id="deleteHandler">DELETE</a></button>
+  <div class="button-nav button-nav-edit">
+    <a href="/" id="homeHandler"><button>&larr; HOME</button></a>
+    <a href="#" id="publishHandler"><button>PUBLISH</button></a>
+    <a href="/" id="deleteHandler"><button>DELETE</button></a>
   </div>
 </body>
 <script type="text/javascript" src="js/new-note.js"></script>
