@@ -34,7 +34,6 @@
             <h3>${note.title}</h3>
             <h4>${note.categories}</h4>
             <i class="fa fa-pencil edit-note"></i>
-            <a href="#" class="publishHandler"><button>PUBLISH</button></a>
             <i class="fa fa-trash delete-note"></i>
             <div>
               <p>${note.description}</p>
@@ -53,7 +52,7 @@
       loading.remove()
     },
     editNoteHandlers() {
-      const editNL = document.getElementsByClassName("publishHandler")
+      const editNL = document.getElementsByClassName("edit-note")
       // convert editNL to array for use with array methods
       const editTargetList = [...editNL]
       const notes = document.getElementsByClassName("note-container")
